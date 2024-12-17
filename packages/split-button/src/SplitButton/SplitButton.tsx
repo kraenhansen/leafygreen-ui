@@ -26,7 +26,7 @@ import { Align, Justify, SplitButtonProps, Variant } from './SplitButton.types';
 export const SplitButton = InferredPolymorphic<SplitButtonProps, 'button'>(
   (
     {
-      darkMode: darkModeProp,
+      darkMode,
       variant = Variant.Default,
       type = 'button',
       align = Align.Bottom,
@@ -56,7 +56,7 @@ export const SplitButton = InferredPolymorphic<SplitButtonProps, 'button'>(
     ref: React.Ref<any>,
   ) => {
     const { Component } = useInferredPolymorphic(as, rest, 'button');
-    const { darkMode, theme } = useDarkMode(darkModeProp);
+    const { theme } = useDarkMode(darkMode);
     const containerRef = useForwardedRef(ref, null);
     const menuId = useIdAllocator({ prefix: 'lg-split-button-menu' });
 
@@ -68,6 +68,7 @@ export const SplitButton = InferredPolymorphic<SplitButtonProps, 'button'>(
     } as const;
 
     const sharedButtonProps = {
+      darkMode,
       variant,
       size,
       baseFontSize,
@@ -76,41 +77,39 @@ export const SplitButton = InferredPolymorphic<SplitButtonProps, 'button'>(
 
     return (
       <div className={cx(buttonContainerStyles, className)} ref={containerRef}>
-        <LeafyGreenProvider darkMode={darkMode}>
-          <Button
-            as={Component}
-            {...sharedButtonProps}
-            {...buttonProps}
-            className={cx(buttonBaseStyles, {
-              [buttonThemeStyles(theme, variant)]: !disabled,
-            })}
-            {...rest}
-          >
-            {label}
-          </Button>
-          <Menu
-            {...sharedButtonProps}
-            maxHeight={maxHeight}
-            adjustOnMutation={adjustOnMutation}
-            popoverZIndex={popoverZIndex}
-            renderMode={renderMode}
-            portalClassName={portalClassName}
-            portalContainer={portalContainer}
-            portalRef={portalRef}
-            scrollContainer={scrollContainer}
-            align={align}
-            justify={justify}
-            containerRef={containerRef}
-            menuItems={menuItems}
-            id={menuId}
-            disabled={disabled}
-            open={open}
-            setOpen={setOpen}
-            onTriggerClick={onTriggerClick}
-            triggerAriaLabel={triggerAriaLabel}
-            onChange={onChange}
-          />
-        </LeafyGreenProvider>
+        <Button
+          as={Component}
+          {...sharedButtonProps}
+          {...buttonProps}
+          className={cx(buttonBaseStyles, {
+            [buttonThemeStyles(theme, variant)]: !disabled,
+          })}
+          {...rest}
+        >
+          {label}
+        </Button>
+        <Menu
+          {...sharedButtonProps}
+          maxHeight={maxHeight}
+          adjustOnMutation={adjustOnMutation}
+          popoverZIndex={popoverZIndex}
+          renderMode={renderMode}
+          portalClassName={portalClassName}
+          portalContainer={portalContainer}
+          portalRef={portalRef}
+          scrollContainer={scrollContainer}
+          align={align}
+          justify={justify}
+          containerRef={containerRef}
+          menuItems={menuItems}
+          id={menuId}
+          disabled={disabled}
+          open={open}
+          setOpen={setOpen}
+          onTriggerClick={onTriggerClick}
+          triggerAriaLabel={triggerAriaLabel}
+          onChange={onChange}
+        />
       </div>
     );
   },
